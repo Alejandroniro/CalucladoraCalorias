@@ -1,6 +1,12 @@
 const formularioCalculadora = document.getElementById('formulario-calculadora');
 const resultadoCalculadora = document.getElementById('resultado');
 
+const MULTIPLICADOR_TMB = Object.freeze({
+    peso: 10,
+    altura: 6.25,
+    edad: 5,
+});
+
 formularioCalculadora.addEventListener('submit', (evento) => {
     evento.preventDefault();
     calcularCalorias();
@@ -9,19 +15,16 @@ formularioCalculadora.addEventListener('submit', (evento) => {
 function calcularCalorias() {
     aparecerResultado();
 
-    const inputs = {
-        edad: document.querySelector('#edad'),
-        peso: document.querySelector('#peso'),
-        altura: document.querySelector('#altura'),
-        actividad: document.querySelector('#actividad'),
-        genero: document.querySelector('input[name="genero"]:checked'),
-        nombre: document.querySelector('#nombre'),
-        tipoDocumento: document.querySelector('#tipo-documento'),
-        tipoDocumentoSelect: document.querySelector('#tipo-documento').value,
-        numeroDocumento: document.querySelector('#numero-documento'),
-    };
+    const edad = document.querySelector('#edad');
+    const peso = document.querySelector('#peso');
+    const altura = document.querySelector('#altura');
+    const actividad = document.querySelector('#actividad');
+    const genero = document.querySelector('input[name="genero"]:checked');
+    const nombre = document.querySelector('#nombre');
+    const tipoDocumento = document.querySelector('#tipo-documento');
+    const tipoDocumentoSelect = tipoDocumento.value;
+    const numeroDocumento = document.querySelector('#numero-documento');
 
-    const { edad, peso, altura, actividad, genero, nombre, tipoDocumento, tipoDocumentoSelect, numeroDocumento } = inputs;
 
     if (!edad.value || !peso.value || !altura.value) {
         mostrarMensajeDeError('Por favor asegúrese de rellenar todos los campos.');
@@ -34,20 +37,14 @@ function calcularCalorias() {
         return;
     }
 
-    const multiplicadorTMB = {
-        peso: 10,
-        altura: 6.25,
-        edad: 5,
-    };
 
-    let calculoCalorias;
+    let calculoCalorias = actividad.value * (MULTIPLICADOR_TMB.peso * peso.value) *
+    (MULTIPLICADOR_TMB.altura * altura.value) - (MULTIPLICADOR_TMB.edad * edadValue);
 
     if (genero.id === 'masculino') {
-        calculoCalorias = actividad.value * (multiplicadorTMB.peso * peso.value) *
-            (multiplicadorTMB.altura * altura.value) - (multiplicadorTMB.edad * edadValue) + 5;
+        calculoCalorias + 5;
     } else {
-        calculoCalorias = actividad.value * (multiplicadorTMB.peso * peso.value) *
-            (multiplicadorTMB.altura * altura.value) - (multiplicadorTMB.edad * edadValue) - 161;
+        calculoCalorias - 161;
     }
 
     let grupoPoblacional;
@@ -69,13 +66,6 @@ function calcularCalorias() {
         </div>
         <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
     </div>`;
-
-    for (const key in inputs) {
-        if (inputs.hasOwnProperty(key)) {
-            const input = inputs[key];
-            input.value = '';
-        }
-    }
 }
 
 function mostrarMensajeDeError(msg) {
