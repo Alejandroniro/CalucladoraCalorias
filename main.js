@@ -93,8 +93,8 @@ function resultadoHTML(data) {
     <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
         <h5 class="card-title h2">Resultado</h5>
         <div class="mb-3 w-100 h-250">
-            <textarea
-             class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>${texto}</textarea>
+            <p
+             class="form-control text-justify" style="font-size: 1rem">${texto}</p>
         </div>
         <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
     </div>`;
