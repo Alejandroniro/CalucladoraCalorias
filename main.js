@@ -19,25 +19,24 @@ formularioCalculadora.addEventListener('submit', (evento) => {
 });
 
 function calcularCalorias() {
-    aparecerResultado();
 
     const edad = document.querySelector('#edad').value;
-    const peso = document.querySelector('#peso');
-    const altura = document.querySelector('#altura');
-    const actividad = document.querySelector('#actividad');
+    const peso = document.querySelector('#peso').value;
+    const altura = document.querySelector('#altura').value;
+    const actividad = document.querySelector('#actividad').value;
     const genero = document.querySelector('input[name="genero"]:checked');
-    const nombre = document.querySelector('#nombre');
-    const tipoDocumento = document.querySelector('#tipo-documento');
-    const tipoDocumentoSelect = tipoDocumento.value;
-    const numeroDocumento = document.querySelector('#numero-documento');
+    const nombre = document.querySelector('#nombre').value;
+    const tipoDocumento = document.querySelector('#tipo-documento').value;
+    const numeroDocumento = document.querySelector('#numero-documento').value;
 
-    const camposIncompletos = !edad.value || !peso.value || !altura.value;
+    const camposIncompletos = !edad || !peso || !altura || !actividad || !genero || !nombre || !tipoDocumento || !numeroDocumento;
     if (camposIncompletos) {
-        mostrarMensajeDeError('Por favor asegúrese de rellenar todos los campos.');
+        // mostrarMensajeDeError('Por favor asegúrese de rellenar todos los campos.');
         return;
     }
+    aparecerResultado();
 
-    const edadValue = parseInt(edad.value);
+    const edadValue = parseInt(edad);
     const noEsUnaEdadValida = edadValue < 15 || edadValue > 80;
     if (noEsUnaEdadValida) {
         mostrarMensajeDeError('La edad ingresada no es válida.');
@@ -45,13 +44,13 @@ function calcularCalorias() {
     }
 
 
-    let calculoCalorias = actividad.value * (MULTIPLICADOR_TMB.peso * peso.value) *
-        (MULTIPLICADOR_TMB.altura * altura.value) - (MULTIPLICADOR_TMB.edad * edadValue);
+    let calculoCalorias = actividad * (MULTIPLICADOR_TMB.peso * peso) *
+        (MULTIPLICADOR_TMB.altura * altura) - (MULTIPLICADOR_TMB.edad * edadValue);
 
     if (genero.id === SEXO.masculino) {
-        calculoCalorias + 5;
+        calculoCalorias += 5;
     } else {
-        calculoCalorias - 161;
+        calculoCalorias -= 161;
     }
 
     let grupoPoblacional;
@@ -63,12 +62,15 @@ function calcularCalorias() {
     } else if (edadValue >= 60) {
         grupoPoblacional = "Adultos mayores";
     }
-
+    console.log('calculoCalorias:', calculoCalorias);
+    console.log('Edad:', edad);
+    console.log('Peso:', peso);
+    console.log('Altura:', altura);
     resultado.innerHTML = `
     <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
         <h5 class="card-title h2">Resultado</h5>
         <div class="mb-3 w-100 h-250">
-            <textarea class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>El paciente ${nombre.value} identificado con ${tipoDocumentoSelect} NO. ${numeroDocumento.value}, requiere un total de ${Math.floor(calculoCalorias)} kcal para el sostenimiento de su TMB.
+            <textarea class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>El paciente ${nombre} identificado con ${tipoDocumento} NO. ${numeroDocumento}, requiere un total de ${Math.floor(calculoCalorias)} kcal para el sostenimiento de su TMB.
             </textarea>
         </div>
         <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
@@ -122,3 +124,25 @@ function desvanecerResultado() {
         }
     }, 10);
 }
+
+(function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                } else {
+                    calcularCalorias();
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
