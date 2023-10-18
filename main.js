@@ -29,6 +29,17 @@ function calcularCalorias() {
     const tipoDocumento = document.querySelector('#tipo-documento').value;
     const numeroDocumento = document.querySelector('#numero-documento').value;
 
+    const resultadoHTML = `
+    <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
+        <h5 class="card-title h2">Resultado</h5>
+        <div class="mb-3 w-100 h-250">
+            <textarea class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>El paciente ${nombre} identificado con ${tipoDocumento} NO. ${numeroDocumento}, requiere un total de ${Math.floor(calculoCalorias)} kcal para el sostenimiento de su TMB.
+            </textarea>
+        </div>
+        <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
+    </div>`;
+
+
     const campos = [
         edad,
         peso,
@@ -44,7 +55,7 @@ function calcularCalorias() {
     if (hayCamposIncompletos) {
         return;
     }
-    
+
     aparecerResultado();
 
     const edadValue = parseInt(edad);
@@ -73,16 +84,6 @@ function calcularCalorias() {
     } else if (edadValue >= 60) {
         grupoPoblacional = "Adultos mayores";
     }
-    
-    const resultadoHTML = `
-    <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
-        <h5 class="card-title h2">Resultado</h5>
-        <div class="mb-3 w-100 h-250">
-            <textarea class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>El paciente ${nombre} identificado con ${tipoDocumento} NO. ${numeroDocumento}, requiere un total de ${Math.floor(calculoCalorias)} kcal para el sostenimiento de su TMB.
-            </textarea>
-        </div>
-        <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
-    </div>`;
 
     resultado.innerHTML = resultadoHTML;
 }
