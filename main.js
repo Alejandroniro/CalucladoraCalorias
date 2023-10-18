@@ -29,11 +29,22 @@ function calcularCalorias() {
     const tipoDocumento = document.querySelector('#tipo-documento').value;
     const numeroDocumento = document.querySelector('#numero-documento').value;
 
-    const camposIncompletos = !edad || !peso || !altura || !actividad || !genero || !nombre || !tipoDocumento || !numeroDocumento;
-    if (camposIncompletos) {
-        // mostrarMensajeDeError('Por favor asegúrese de rellenar todos los campos.');
+    const campos = [
+        edad,
+        peso,
+        altura,
+        actividad,
+        genero,
+        nombre,
+        tipoDocumento,
+        numeroDocumento
+    ]
+
+    const hayCamposIncompletos = campos.some(campo => !campo);
+    if (hayCamposIncompletos) {
         return;
     }
+    
     aparecerResultado();
 
     const edadValue = parseInt(edad);
@@ -62,11 +73,8 @@ function calcularCalorias() {
     } else if (edadValue >= 60) {
         grupoPoblacional = "Adultos mayores";
     }
-    console.log('calculoCalorias:', calculoCalorias);
-    console.log('Edad:', edad);
-    console.log('Peso:', peso);
-    console.log('Altura:', altura);
-    resultado.innerHTML = `
+    
+    const resultadoHTML = `
     <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
         <h5 class="card-title h2">Resultado</h5>
         <div class="mb-3 w-100 h-250">
@@ -75,6 +83,8 @@ function calcularCalorias() {
         </div>
         <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
     </div>`;
+
+    resultado.innerHTML = resultadoHTML;
 }
 
 function mostrarMensajeDeError(msg) {
@@ -125,21 +135,18 @@ function desvanecerResultado() {
     }, 10);
 }
 
+// validaciones boostrap
 (function () {
     'use strict'
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.querySelectorAll('.needs-validation')
 
-    // Loop over them and prevent submission
     Array.prototype.slice.call(forms)
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
-                } else {
-                    calcularCalorias();
                 }
 
                 form.classList.add('was-validated')
