@@ -74,15 +74,27 @@ function calcularCalorias() {
         grupoPoblacional = "Adultos mayores";
     }
 
-    resultado.innerHTML = resultadoHTML;
+    resultado.innerHTML = resultadoHTML({
+        nombre,
+        tipoDocumento,
+        numeroDocumento,
+        calculoCalorias,
+        grupoPoblacional
+
+    });
 }
-function resultadoHTML() {
-    `
+
+function resultadoHTML(data) {
+    const { nombre, tipoDocumento, numeroDocumento, calculoCalorias, grupoPoblacional } = data
+    const texto = `El paciente ${nombre} identificado con ${tipoDocumento} NO. ${numeroDocumento}, `
+        + `requiere un total de ${Math.floor(calculoCalorias)} kcal para el sostenimiento de su TMB.`
+
+    return `
     <div class="card-body d-flex flex-column justify-content-center align-items-center h-100" id="calculo">
         <h5 class="card-title h2">Resultado</h5>
         <div class="mb-3 w-100 h-250">
-            <textarea class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>El paciente ${nombre} identificado con ${tipoDocumento} NO. ${numeroDocumento}, requiere un total de ${Math.floor(calculoCalorias)} kcal para el sostenimiento de su TMB.
-            </textarea>
+            <textarea
+             class="form-control text-justify" style="font-size: 1rem" rows="4" readonly>${texto}</textarea>
         </div>
         <h5 class="card-title h3 text-center">Usted es parte del grupo poblacional de: ${grupoPoblacional}</h5>
     </div>`;
