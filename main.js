@@ -7,6 +7,12 @@ const MULTIPLICADOR_TMB = Object.freeze({
     edad: 5,
 });
 
+const SEXO = Object.freeze({
+    masculino: "masculino",
+    femenino: "femenino"
+
+})
+
 formularioCalculadora.addEventListener('submit', (evento) => {
     evento.preventDefault();
     calcularCalorias();
@@ -15,7 +21,7 @@ formularioCalculadora.addEventListener('submit', (evento) => {
 function calcularCalorias() {
     aparecerResultado();
 
-    const edad = document.querySelector('#edad');
+    const edad = document.querySelector('#edad').value;
     const peso = document.querySelector('#peso');
     const altura = document.querySelector('#altura');
     const actividad = document.querySelector('#actividad');
@@ -25,23 +31,24 @@ function calcularCalorias() {
     const tipoDocumentoSelect = tipoDocumento.value;
     const numeroDocumento = document.querySelector('#numero-documento');
 
-
-    if (!edad.value || !peso.value || !altura.value) {
+    const camposIncompletos = !edad.value || !peso.value || !altura.value;
+    if (camposIncompletos) {
         mostrarMensajeDeError('Por favor asegúrese de rellenar todos los campos.');
         return;
     }
 
     const edadValue = parseInt(edad.value);
-    if (edadValue < 15 || edadValue > 80) {
+    const noEsUnaEdadValida = edadValue < 15 || edadValue > 80;
+    if (noEsUnaEdadValida) {
         mostrarMensajeDeError('La edad ingresada no es válida.');
         return;
     }
 
 
     let calculoCalorias = actividad.value * (MULTIPLICADOR_TMB.peso * peso.value) *
-    (MULTIPLICADOR_TMB.altura * altura.value) - (MULTIPLICADOR_TMB.edad * edadValue);
+        (MULTIPLICADOR_TMB.altura * altura.value) - (MULTIPLICADOR_TMB.edad * edadValue);
 
-    if (genero.id === 'masculino') {
+    if (genero.id === SEXO.masculino) {
         calculoCalorias + 5;
     } else {
         calculoCalorias - 161;
